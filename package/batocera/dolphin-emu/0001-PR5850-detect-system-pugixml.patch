@@ -1,0 +1,53 @@
+From 25f2f7dba856b96cd0f772950d4a9ddeebde118d Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?R=C3=A9mi=20Verschelde?= <rverschelde@gmail.com>
+Date: Sun, 30 Jul 2017 23:26:52 +0200
+Subject: [PATCH] Detect and use system-wide pugixml if available
+
+---
+ CMake/FindPugiXML.cmake | 15 +++++++++++++++
+ CMakeLists.txt          | 10 +++++++++-
+ 2 files changed, 24 insertions(+), 1 deletion(-)
+ create mode 100644 CMake/FindPugiXML.cmake
+
+diff --git a/CMake/FindPugiXML.cmake b/CMake/FindPugiXML.cmake
+new file mode 100644
+index 00000000000..4e185366cce
+--- /dev/null
++++ b/CMake/FindPugiXML.cmake
+@@ -0,0 +1,15 @@
++# - Find PugiXML library
++# Find the native PugiXML includes and library
++#
++# This module defines
++#  PugiXML_INCLUDE_DIR, where to find PugiXML.h, etc.
++#  PugiXML_LIBRARIES, libraries to link against to use PugiXML.
++#  PugiXML_FOUND, if false, do not try to use PugiXML.
++
++find_path(PugiXML_INCLUDE_DIR pugixml.hpp)
++find_library(PugiXML_LIBRARIES NAMES pugixml)
++
++include(FindPackageHandleStandardArgs)
++find_package_handle_standard_args(PugiXML REQUIRED_VARS PugiXML_LIBRARIES PugiXML_INCLUDE_DIR)
++
++mark_as_advanced(PugiXML_INCLUDE_DIR PugiXML_LIBRARY)
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 098caad8bbe..9c9da3ac1a2 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -551,7 +551,15 @@ include_directories(Externals/Bochs_disasm)
+ 
+ add_subdirectory(Externals/glslang)
+ 
+-add_subdirectory(Externals/pugixml)
++find_package(PugiXML)
++if(PugiXML_FOUND)
++  message(STATUS "Using shared pugixml")
++  include_directories(${PugiXML_INCLUDE_DIRS})
++else()
++  message(STATUS "Shared pugixml not found, falling back to the static library")
++  add_subdirectory(Externals/pugixml)
++  include_directories(Externals/pugixml)
++endif()
+ 
+ add_subdirectory(Externals/cpp-optparse)
+ 
