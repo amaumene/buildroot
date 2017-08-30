@@ -1,0 +1,7 @@
+checkout:
+  post:
+    - cp configs/my_batocera_x86_64_nvidia .config 
+
+test:
+  override:
+    - ./stupidbuild.sh
