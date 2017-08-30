@@ -1,7 +1,10 @@
 checkout:
   post:
     - cp configs/my_batocera_x86_64_nvidia .config 
-
+dependencies:
+  pre:
+    - sudo apt-get -y update; sudo apt-get install build-essential git libncurses5-dev libssl-dev mercurial texinfo zip default-jre imagemagick subversion hgsubversion autoconf automake bison scons libglib2.0-dev bc mtools u-boot-tools
 test:
   override:
-    - ./stupidbuild.sh
+    - make > >(tee build.log |grep '>>>') 2>&1
+    - tail -1000 build.log
