@@ -4,17 +4,12 @@ dist: trusty
 #install:
 #  - sudo apt-get -qq update
 #  - sudo apt-get install -y bc libc6 libstdc++6 zlib1g build-essential
-notifications:
-  email:
-    recipients:
-      - alexandre@maumene.org
-    on_success: always # default: change
-    on_failure: always # default: always
-env:
-  matrix:
-   - DEFCONFIG_NAME=my_batocera_x86_64_nvidia
+#notifications:
+#  email:
+#    recipients:
+#      - alexandre@maumene.org
+#    on_success: always # default: change
+#    on_failure: always # default: always
 script:
-- ls -lah
-- make ${DEFCONFIG_NAME}
-- echo 'Display end of log'
-- tail -1000 build.log
+- cp configs/my_batocera_x86_64_nvidia .config
+- make
