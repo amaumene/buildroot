@@ -12,7 +12,6 @@ dist: trusty
 #    on_failure: always # default: always
 script:
 - cp configs/my_batocera_x86_64_nvidia .config
-- make
 - while true ; do echo "Still building" ; sleep 60 ; done &
 - stupidpid=$!
 - echo 'Build buildroot'
