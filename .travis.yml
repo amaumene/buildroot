@@ -12,13 +12,8 @@ notifications:
     on_failure: always # default: always
 env:
   matrix:
-   - DEFCONFIG_NAME=my_batocera_x86_64_nvidi
+   - DEFCONFIG_NAME=my_batocera_x86_64_nvidia
 script:
 - make ${DEFCONFIG_NAME}
-- while true ; do echo "Still building" ; sleep 60 ; done &
-- stupidpid=$!
-- echo 'Build buildroot'
-- make > >(tee build.log |grep '>>>') 2>&1
-- kill ${stupidpid}
 - echo 'Display end of log'
 - tail -1000 build.log
