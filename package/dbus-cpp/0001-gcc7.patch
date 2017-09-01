@@ -1,5 +1,0 @@
-86c86,87
-<   ::write(_fd_write, '\0', 1);
----
->   char nullch = '\0';
->   ::write(_fd_write, &nullch, 1);
